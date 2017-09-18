@@ -1,4 +1,4 @@
-import { ADD_TODO, TOGGLE_TODO } from "./actions";
+import { ADD_TODO, TOGGLE_TODO, REMOVE_TODO, CLEAR_TODOS } from "./actions";
 import { tassign } from "tassign";
 
 export interface IAppState {
@@ -30,9 +30,25 @@ export function rootReducer(state: IAppState, action): IAppState {
         lastUpdate: new Date()
       });
     case TOGGLE_TODO:
-      let currentTodo = state.todos.find(t => t.id === action.todo.id)
-
-
+      let currentTodo = state.todos.find(t => t.id === action.todo.id);
+      let index       = state.todos.indexOf(currentTodo);
+      return tassign(state, {
+        todos: [
+          ...state.todos.slice(0, index),
+          tassign(currentTodo, { isCompleted: !currentTodo.isCompleted }),
+          ...state.todos.slice(index + 1)
+        ]
+      });
+    case REMOVE_TODO:
+      return tassign(state, {
+        todos: state.todos.filter(t => t.id !== action.id),
+        lastUpdate: new Date()
+      })
+    case CLEAR_TODOS:
+      return tassign(state, {
+        todos: [],
+        lastUpdate: new Date()
+      })
   }
   return state;
 }
