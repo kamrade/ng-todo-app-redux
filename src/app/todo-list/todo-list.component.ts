@@ -58,4 +58,10 @@ export class TodoListComponent {
   removeTodo(todo) {
     this.service.removeTodo(todo);
   }
+
+  onKey(e, titleInput) {
+    if(e.keyCode === 13) {
+      this.reduxAddTodo(titleInput);
+    }
+  }
 }

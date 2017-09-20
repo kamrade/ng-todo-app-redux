@@ -1,6 +1,5 @@
-
 <h1>Todo List</h1>
-<input type="text" #title>
+<input type="text" #title (keyup)="onKey($event, title)">
 <button (click)="reduxAddTodo(title)">Add</button>
 <ul>
   <li *ngFor="let t of todos | async">
